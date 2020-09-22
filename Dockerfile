@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.6-slim-stretch
 
 RUN apt-get -y update && apt-get install -y --fix-missing \
     build-essential \
@@ -22,6 +22,6 @@ RUN apt-get -y update && apt-get install -y --fix-missing \
 
 RUN cd ~ && \
     mkdir -p dlib && \
-    git clone -b "v19.9" --single-branch https://github.com/davisking/dlib.git dlib/ && \
-    cd  dlib/ && \
+    git clone -b `basename $(curl -fs -o/dev/null -w %{redirect_url} https://github.com/davisking/dlib/releases/latest)` --single-branch https://github.com/davisking/dlib.git dlib/ && \
+    cd dlib/ && \
     python3 setup.py install --yes USE_AVX_INSTRUCTIONS
